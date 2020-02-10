@@ -3,7 +3,7 @@ from time import sleep
 
 def straight(bot, seconds):
     bot.set_left(100)
-    bot.set_right(70)
+    bot.set_right(100)
     sleep(seconds)
 
 def turn_left(bot, seconds):

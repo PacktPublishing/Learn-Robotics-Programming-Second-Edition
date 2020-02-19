@@ -1,6 +1,7 @@
 from Raspi_MotorHAT import Raspi_MotorHAT
 import atexit
 import leds_led_shim
+from servos import Servos
 
 
 class Robot:
@@ -14,6 +15,8 @@ class Robot:
 
         # Setup the Leds
         self.leds = leds_led_shim.Leds()
+        # Set up servo motors for pan and tilt.
+        self.servos = Servos(addr=motorhat_addr)
         # ensure the motors get stopped when the code exits
         atexit.register(self.stop_all)
 
@@ -50,4 +53,12 @@ class Robot:
         self.leds.clear()
         self.leds.show()
 
+        # Reset the servos
+        self.servos.stop_all()
+
+    def set_pan(self, angle):
+        self.servos.set_servo_angle(1, angle)
+    
+    def set_tilt(self, angle):
+        self.servos.set_servo_angle(0, angle)
 

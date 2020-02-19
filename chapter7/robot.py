@@ -3,7 +3,7 @@ from Raspi_MotorHAT import Raspi_MotorHAT
 import atexit
 
 
-class Robot(object):
+class Robot:
     def __init__(self, motorhat_addr=0x6f):
         # Setup the motorhat with the passed in address
         self._mh = Raspi_MotorHAT(addr=motorhat_addr)

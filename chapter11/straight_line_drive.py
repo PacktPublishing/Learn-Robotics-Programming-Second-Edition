@@ -8,16 +8,16 @@ logging.basicConfig(level=logging.INFO)
 logging.getLogger("pid_controller").setLevel(logging.DEBUG)
 
 bot = Robot()
-stop_at_time = time.time() + 60
+stop_at_time = time.time() + 15
 
 speed = 80
 bot.set_left(speed)
 bot.set_right(speed)
 
-pid = PIController(proportional_constant=3, integral_constant=0.2)
+pid = PIController(proportional_constant=4, integral_constant=0.3)
 
 while time.time() < stop_at_time:
-    time.sleep(0.02)
+    time.sleep(0.01)
     # Calculate the error
     left = bot.left_encoder.pulse_count
     right = bot.right_encoder.pulse_count

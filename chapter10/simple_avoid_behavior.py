@@ -49,8 +49,10 @@ class ObstacleAvoidingBehavior:
             self.display_state(left_distance, right_distance)
             print("Left: {l:.2f}, Right: {r:.2f}".format(l=left_distance, r=right_distance))
             # and drive
-            self.robot.set_right(self.get_motor_speed(left_distance))
-            self.robot.set_left(self.get_motor_speed(right_distance))
+            left_speed = self.get_motor_speed(left_distance)
+            self.robot.set_right(left_speed)
+            right_speed = self.get_motor_speed(right_distance)
+            self.robot.set_left(right_speed)
              # Wait a little
             sleep(0.05)
 

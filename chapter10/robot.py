@@ -11,18 +11,18 @@ class Robot:
         # Setup the motorhat with the passed in address
         self._mh = Raspi_MotorHAT(addr=motorhat_addr)
 
+        # get local variable for each motor
         self.left_motor = self._mh.getMotor(1)
         self.right_motor  = self._mh.getMotor(2)
+
+        # Setup The Distance Sensors
+        self.left_distance_sensor = DistanceSensor(echo=17, trigger=27, queue_len=2)
+        self.right_distance_sensor = DistanceSensor(echo=5, trigger=6, queue_len=2)
 
         # Setup the Leds
         self.leds = leds_led_shim.Leds()
         # Set up servo motors for pan and tilt.
         self.servos = Servos(addr=motorhat_addr)
-        
-        # Setup The Distance Sensors
-        self.left_distance_sensor = DistanceSensor(echo=17, trigger=27, queue_len=2)
-        self.right_distance_sensor = DistanceSensor(echo=5, trigger=6, queue_len=2)
-
         # ensure the motors get stopped when the code exits
         atexit.register(self.stop_all)
 

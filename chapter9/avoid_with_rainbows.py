@@ -1,5 +1,7 @@
 from robot import Robot
 from time import sleep
+from led_rainbow import show_rainbow
+
 
 class ObstacleAvoidingBehavior:
     """Simple obstacle avoiding"""
@@ -8,7 +10,6 @@ class ObstacleAvoidingBehavior:
         self.speed = 60
         # Calculations for the LEDs
         self.led_half = int(self.robot.leds.count/2)
-        print(self.led_half)
         self.sense_colour = 255, 0, 0
 
     def distance_to_led_bar(self, distance):
@@ -22,13 +23,13 @@ class ObstacleAvoidingBehavior:
         self.robot.leds.clear()
         # Left side
         led_bar = self.distance_to_led_bar(left_distance)
-        # print(led_bar)
-        self.robot.leds.set_range(range(led_bar), self.sense_colour)
+        show_rainbow(self.robot.leds, range(led_bar))
         # Right side
         led_bar = self.distance_to_led_bar(right_distance)
         # Bit trickier - must go from below the leds count, to the leds count.
-        start = (self.robot.leds.count - 1) - led_bar
-        self.robot.leds.set_range(range(start, self.robot.leds.count - 1), self.sense_colour)
+        start = (self.robot.leds.count - 1) - (led_bar)
+        right_range = range(self.robot.leds.count - 1, start, -1)
+        show_rainbow(self.robot.leds, right_range)
         # Now show this display
         self.robot.leds.show()
 
@@ -80,4 +81,3 @@ class ObstacleAvoidingBehavior:
 bot = Robot()
 behavior = ObstacleAvoidingBehavior(bot)
 behavior.run()
-

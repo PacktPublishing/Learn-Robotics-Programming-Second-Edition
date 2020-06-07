@@ -18,7 +18,7 @@ def make_accel_frame(accel_vector):
     axes.set_xlim(-1, 1)
     axes.set_ylim(-1, 1)
     axes.set_zlim(-1, 1)
-    ax.plot([0.0, accel_vector[0]], [0.0, accel_vector[1]], [0.0, -accel_vector[2]], 'b-o')
+    ax.plot([0.0, accel_vector.x], [0.0, accel_vector.y], [0.0, -accel_vector.z], 'b-o')
     output = io.BytesIO()
     pyplot.savefig(output, format='png')
     pyplot.close(fig)

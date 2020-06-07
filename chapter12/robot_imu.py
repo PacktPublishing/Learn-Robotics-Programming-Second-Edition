@@ -1,5 +1,6 @@
-from icm20948 import ICM20948
 import struct
+from collections import namedtuple
+from icm20948 import ICM20948
 
 # Number from ICM datasheet.
 ICM20948_TEMP_OUT_H = 0x39
@@ -9,7 +10,10 @@ ICM20948_TEMPERATURE_DEGREES_OFFSET = 21
 ICM20948_TEMPERATURE_SENSITIVITY = 333.87
 ICM20948_ROOM_TEMP_OFFSET = 21
 
+Vector3 = namedtuple('Vector3', ['x', 'y', 'z'])
 
+
+# https://robotics.stackexchange.com/questions/6953/how-to-calculate-euler-angles-from-gyroscope-output
 class RobotImu:
     """Define a common interface to an inertial measurement unit with temperature"""
     def __init__(self):
@@ -27,9 +31,9 @@ class RobotImu:
     def read_accelerometer(self):
         """Return prescaled accelerometer data"""
         accel_x, accel_y, accel_z, _, _, _ = self._imu.read_accelerometer_gyro_data()
-        return accel_x, accel_y, accel_z
+        return Vector3(accel_x, accel_y, accel_z)
 
     def read_gyro(self):
         """Return prescaled gyro data"""
         _, _, _, gyro_x, gyro_y, gyro_z = self._imu.read_accelerometer_gyro_data()
-        return gyro_x, gyro_y, gyro_z
+        return Vector3(gyro_x, gyro_y, gyro_z)

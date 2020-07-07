@@ -12,7 +12,6 @@ ICM20948_ROOM_TEMP_OFFSET = 21
 
 Vector3 = namedtuple('Vector3', ['x', 'y', 'z'])
 
-
 # https://robotics.stackexchange.com/questions/6953/how-to-calculate-euler-angles-from-gyroscope-output
 class RobotImu:
     """Define a common interface to an inertial measurement unit with temperature"""
@@ -29,7 +28,7 @@ class RobotImu:
         return temperature_deg_c
 
     def read_accelerometer(self):
-        """Return prescaled accelerometer data"""
+        """Return prescaled accelerometer data in g's"""
         accel_x, accel_y, accel_z, _, _, _ = self._imu.read_accelerometer_gyro_data()
         return Vector3(accel_x, accel_y, accel_z)
 

@@ -1,2 +1,6 @@
 .DS_Store
 ext_lib
+/.venv/
+/.vscode/
+/.idea/
+/ext_lib/MPU9250/

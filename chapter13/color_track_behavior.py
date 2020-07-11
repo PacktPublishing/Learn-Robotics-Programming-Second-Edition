@@ -10,7 +10,7 @@ from pid_controller import PIController
 from robot import Robot
 
 
-class ColorTrackingBehavior(object):
+class ColorTrackingBehavior:
     def __init__(self, robot):
         self.robot = robot
         self.low_range = (25, 70, 25)
@@ -23,7 +23,6 @@ class ColorTrackingBehavior(object):
         instruction = get_control_instruction()
         if instruction:
             command = instruction['command']
-            print("Recieved command", command)
             if command == "start":
                 self.running = True
             elif command == "stop":

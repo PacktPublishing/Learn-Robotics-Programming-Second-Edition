@@ -1,5 +1,5 @@
 from flask import Flask, render_template, Response
-import pi_camera_stream
+import camera_stream
 import time
 
 app = Flask(__name__)
@@ -10,12 +10,12 @@ def index():
 
 def frame_generator():
     """This is our main video feed"""
-    camera = pi_camera_stream.setup_camera()
+    camera = camera_stream.setup_camera()
 
     # allow the camera to warm up
     time.sleep(0.1)
-    for frame in pi_camera_stream.start_stream(camera):
-        encoded_bytes = pi_camera_stream.get_encoded_bytes_for_frame(frame)
+    for frame in camera_stream.start_stream(camera):
+        encoded_bytes = camera_stream.get_encoded_bytes_for_frame(frame)
         yield (b'--frame\r\n'
                 b'Content-Type: image/jpeg\r\n\r\n' + encoded_bytes + b'\r\n')
 

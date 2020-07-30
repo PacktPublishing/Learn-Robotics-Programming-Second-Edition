@@ -5,7 +5,7 @@ from image_app_core import start_server_process, get_control_instruction, put_ou
 import cv2
 import numpy as np
 
-import pi_camera_stream
+import camera_stream
 from pid_controller import PIController
 from robot import Robot
 
@@ -49,7 +49,7 @@ class ColorTrackingBehavior:
         """Create display output, and put it on the queue"""
         # Make a dualscreen view - two images of the same scale joined together
         display_frame = np.concatenate((frame, processed), axis=1)
-        encoded_bytes = pi_camera_stream.get_encoded_bytes_for_frame(display_frame)
+        encoded_bytes = camera_stream.get_encoded_bytes_for_frame(display_frame)
         put_output_image(encoded_bytes)
 
     def process_frame(self, frame):
@@ -65,7 +65,7 @@ class ColorTrackingBehavior:
     def run(self):
         self.robot.set_pan(0)
         self.robot.set_tilt(0)
-        camera = pi_camera_stream.setup_camera()
+        camera = camera_stream.setup_camera()
 
         speed_pid = PIController(proportional_constant=0.8,
             integral_constant=0.1 , windup_limit=100)
@@ -76,7 +76,7 @@ class ColorTrackingBehavior:
         self.robot.servos.stop_all()
         print("Setup Complete")
         print('Radius, Radius error, speed value, direction error, direction value')
-        for frame in pi_camera_stream.start_stream(camera):
+        for frame in camera_stream.start_stream(camera):
             (x, y), radius = self.process_frame(frame)
 
             self.process_control()

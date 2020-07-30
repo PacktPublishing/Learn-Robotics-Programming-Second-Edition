@@ -5,7 +5,7 @@ from image_app_core import start_server_process, get_control_instruction, put_ou
 import cv2
 import os
 
-import pi_camera_stream
+import camera_stream
 from pid_controller import PIController
 from robot import Robot
 
@@ -52,7 +52,7 @@ class FaceTrackBehavior:
         return largest[1]
 
     def make_display(self, display_frame):
-        encoded_bytes = pi_camera_stream.get_encoded_bytes_for_frame(display_frame)
+        encoded_bytes = camera_stream.get_encoded_bytes_for_frame(display_frame)
         put_output_image(encoded_bytes)
 
     def process_frame(self, frame):
@@ -62,10 +62,10 @@ class FaceTrackBehavior:
         return x, y, w, h
 
     def run(self):
-        camera = pi_camera_stream.setup_camera()
+        camera = camera_stream.setup_camera()
         time.sleep(0.1)
         print("Setup Complete")
-        for frame in pi_camera_stream.start_stream(camera):
+        for frame in camera_stream.start_stream(camera):
             (x, y, w, h) = self.process_frame(frame)
             self.process_control()
             if self.running and h > self.min_size:

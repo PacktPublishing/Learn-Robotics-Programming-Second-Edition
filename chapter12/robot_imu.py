@@ -36,3 +36,8 @@ class RobotImu:
         """Return prescaled gyro data"""
         _, _, _, gyro_x, gyro_y, gyro_z = self._imu.read_accelerometer_gyro_data()
         return Vector3(gyro_x, gyro_y, gyro_z)
+
+    def read_magnetometer(self):
+        """Return magnetometer data"""
+        mag_x, mag_y, mag_z = self._imu.read_magnetometer_data()
+        return Vector3(mag_x, mag_y, mag_z)

@@ -32,7 +32,7 @@ class RobotImu:
         accel_x, accel_y, accel_z, _, _, _ = self._imu.read_accelerometer_gyro_data()
         return Vector3(accel_x, accel_y, accel_z)
 
-    def read_gyro(self):
+    def read_gyroscope(self):
         """Return prescaled gyro data"""
         _, _, _, gyro_x, gyro_y, gyro_z = self._imu.read_accelerometer_gyro_data()
         return Vector3(gyro_x, gyro_y, gyro_z)

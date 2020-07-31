@@ -18,8 +18,8 @@ vp.graph(xmin=0, xmax=60, scroll=True)
 temp_graph = vp.gcurve()
 start = time.time()
 while True:
+    vp.rate(100)
     data = log_temperature(imu)
     elapsed = time.time() - start
     temp_graph.plot(elapsed, data)
-    vp.rate(100)
 

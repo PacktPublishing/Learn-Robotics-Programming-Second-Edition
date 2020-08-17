@@ -13,5 +13,5 @@ z_arrow = vp.arrow(axis=vp.vector(0, 0, 1), color=vp.color.blue)
 while True:
     vp.rate(100)
     accel = imu.read_accelerometer()
-    logging.info(f"Accelerometer: {accel.x:.2f}, {accel.y:.2f}, {accel.z:.2f}")
+    logging.info(f"Accelerometer: {accel}")
     accel_arrow.axis = -accel

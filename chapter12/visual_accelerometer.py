@@ -10,6 +10,6 @@ robot = make_robot()
 while True:
     vp.rate(100)
     accel = imu.read_accelerometer()
-    logging.info(f"Accelerometer: {accel.x:.2f}, {accel.y:.2f}, {accel.z:.2f}")
+    logging.info(f"Accelerometer: {accel}")
     robot.axis = vp.vector(1, 0, 0)
     robot.up = vp.vector(-accel.x, accel.y, -accel.z)

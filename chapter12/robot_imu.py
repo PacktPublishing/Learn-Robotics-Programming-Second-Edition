@@ -9,6 +9,7 @@ class RobotImu:
     def __init__(self):
         self._imu = ICM20948()
         self.magnetometer_offsets = vector(0, 0, 0)
+        self.gyro_offsets = vector(0, 0, 0)
 
     def read_temperature(self):
         """Read a temperature in degrees C."""
@@ -22,16 +23,12 @@ class RobotImu:
     def read_gyroscope(self):
         """Return prescaled gyro data"""
         _, _, _, gyro_x, gyro_y, gyro_z = self._imu.read_accelerometer_gyro_data()
-        return vector(gyro_x, gyro_z, -gyro_y)
+        return vector(gyro_x, gyro_z, -gyro_y) - self.gyro_offsets
 
     def read_magnetometer(self):
         """Return magnetometer data"""
         mag_x, mag_y, mag_z = self._imu.read_magnetometer_data()
-        return vector(mag_x, mag_y, mag_z) - self.magnetometer_offsets
-
-    def read_9dof(self):
-        accel_x, accel_y, accel_z, gyro_x, gyro_y, gyro_z = self._imu.read_accelerometer_gyro_data()
-        return vector(accel_x, accel_y, accel_z), vector(gyro_x, gyro_y, gyro_z), self.read_magnetometer()
+        return vector(mag_x, mag_z, -mag_y) - self.magnetometer_offsets
 
 
 class GyroIntegrator:
@@ -50,7 +47,7 @@ class GyroIntegrator:
         # Accumulate gyro readings scaled by delta time
         gyro = self.imu.read_gyroscope()
         self.rotations += gyro * self.delta_time()
-        logging.info(f"Gyroscope: {gyro.x:.2f}, {gyro.y:.2f}, {gyro.z:.2f}, "
+        logging.info(f"Gyroscope: {gyro}, "
                      f"rotations: {self.rotations}")
 
     def rotate_model(self, model):

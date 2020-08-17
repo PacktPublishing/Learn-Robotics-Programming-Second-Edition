@@ -2,17 +2,18 @@ import vpython as vp
 # import time
 import logging
 from robot_imu import RobotImu
-
+from imu_settings import magnetometer_offsets
 
 logging.basicConfig(level=logging.INFO)
 imu = RobotImu()
-# imu.set_magnetometer_offset((-46.95, -0.825, 47.7))
+imu.magnetometer_offsets = magnetometer_offsets
 
 mag_arrow = vp.arrow(pos=vp.vector(0, 0, 0))
 x_arrow = vp.arrow(axis=vp.vector(1, 0, 0), color=vp.color.red)
 y_arrow = vp.arrow(axis=vp.vector(0, 1, 0), color=vp.color.green)
 z_arrow = vp.arrow(axis=vp.vector(0, 0, 1), color=vp.color.blue)
-
+vp.scene.forward = vp.vector(0, -1, 0)
+vp.scene.up = vp.vector(0, 0, -1)
 # vp.graph(xmin=0, xmax=60, scroll=True)
 # graph_x = vp.gcurve(color=vp.color.red)
 # graph_y = vp.gcurve(color=vp.color.green)
@@ -23,8 +24,8 @@ while True:
     vp.rate(100)
 
     mag = imu.read_magnetometer()
-    logging.info(f"Magnetometer: {mag.x:.2f}, {mag.y:.2f}, {mag.z:.2f}")
-    mag_arrow.axis = vp.vector(mag.x, mag.y, 0)
+    logging.info(f"Magnetometer: {mag}")
+    mag_arrow.axis = vp.vector(mag.x, 0, mag.z)
     mag_arrow.length = 1
     # elapsed = time.time() - start
     # graph_x.plot(elapsed, mag.x)

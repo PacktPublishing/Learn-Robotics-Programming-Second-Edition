@@ -8,10 +8,7 @@ class RobotImu:
     """Define a common interface to an inertial measurement unit with temperature"""
     def __init__(self):
         self._imu = ICM20948()
-        self._magnetometer_offsets = vector(0, 0, 0)
-
-    def set_magnetometer_offset(self, offsets):
-        self._magnetometer_offsets = vector(*offsets)
+        self.magnetometer_offsets = vector(0, 0, 0)
 
     def read_temperature(self):
         """Read a temperature in degrees C."""
@@ -20,20 +17,17 @@ class RobotImu:
     def read_accelerometer(self):
         """Return prescaled accelerometer data in g's"""
         accel_x, accel_y, accel_z, _, _, _ = self._imu.read_accelerometer_gyro_data()
-        return vector(accel_x, accel_y, accel_z)
+        return vector(accel_x, accel_z, -accel_y)
 
     def read_gyroscope(self):
         """Return prescaled gyro data"""
         _, _, _, gyro_x, gyro_y, gyro_z = self._imu.read_accelerometer_gyro_data()
-        return vector(gyro_x, gyro_y, gyro_z)
+        return vector(gyro_x, gyro_z, -gyro_y)
 
     def read_magnetometer(self):
         """Return magnetometer data"""
         mag_x, mag_y, mag_z = self._imu.read_magnetometer_data()
-        mag_x, mag_y, mag_z = mag_x - self._magnetometer_offsets.x, \
-                              mag_y - self._magnetometer_offsets.y, \
-                              mag_z - self._magnetometer_offsets.z
-        return vector(mag_x, mag_y, mag_z)
+        return vector(mag_x, mag_y, mag_z) - self.magnetometer_offsets
 
     def read_9dof(self):
         accel_x, accel_y, accel_z, gyro_x, gyro_y, gyro_z = self._imu.read_accelerometer_gyro_data()
@@ -65,5 +59,5 @@ class GyroIntegrator:
         model.axis = vector(1, 0, 0)
         # Reposition it
         model.rotate(angle=radians(self.rotations.x), axis=vector(1, 0, 0))
-        model.rotate(angle=radians(self.rotations.z), axis=vector(0, 1, 0))
-        model.rotate(angle=radians(-self.rotations.y), axis=vector(0, 0, 1))
+        model.rotate(angle=radians(self.rotations.y), axis=vector(0, 1, 0))
+        model.rotate(angle=radians(self.rotations.z), axis=vector(0, 0, 1))

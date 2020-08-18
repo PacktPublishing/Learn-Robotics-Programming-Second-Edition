@@ -1,6 +1,6 @@
 import vpython as vp
 import logging
-from robot_imu import RobotImu
+from robot_imu import RobotImu, imu_to_vpython
 from virtual_robot import make_robot
 
 logging.basicConfig(level=logging.INFO)
@@ -12,4 +12,4 @@ while True:
     accel = imu.read_accelerometer()
     logging.info(f"Accelerometer: {accel}")
     robot.axis = vp.vector(1, 0, 0)
-    robot.up = vp.vector(-accel.x, accel.y, -accel.z)
+    robot.up = imu_to_vpython(vp.vector(-accel.x, -accel.y, accel.z))

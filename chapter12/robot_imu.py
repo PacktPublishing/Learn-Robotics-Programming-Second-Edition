@@ -1,5 +1,5 @@
 from icm20948 import ICM20948
-from vpython import vector, radians
+from vpython import vector
 import time
 import logging
 
@@ -18,17 +18,22 @@ class RobotImu:
     def read_accelerometer(self):
         """Return prescaled accelerometer data in g's"""
         accel_x, accel_y, accel_z, _, _, _ = self._imu.read_accelerometer_gyro_data()
-        return vector(accel_x, accel_z, -accel_y)
+        return vector(accel_x, accel_y, accel_z)
 
     def read_gyroscope(self):
         """Return prescaled gyro data"""
         _, _, _, gyro_x, gyro_y, gyro_z = self._imu.read_accelerometer_gyro_data()
-        return vector(gyro_x, gyro_z, -gyro_y) - self.gyro_offsets
+        return vector(gyro_x, gyro_y, gyro_z) - self.gyro_offsets
 
     def read_magnetometer(self):
         """Return magnetometer data"""
         mag_x, mag_y, mag_z = self._imu.read_magnetometer_data()
         return vector(mag_x, mag_z, -mag_y) - self.magnetometer_offsets
+
+
+def imu_to_vpython(original):
+    """convert our robot IMU coords into VPython coordinates"""
+    return vector(-original.x, original.z, original.y)
 
 
 class GyroIntegrator:
@@ -49,12 +54,3 @@ class GyroIntegrator:
         self.rotations += gyro * self.delta_time()
         logging.info(f"Gyroscope: {gyro}, "
                      f"rotations: {self.rotations}")
-
-    def rotate_model(self, model):
-        # reset the model
-        model.up = vector(0, 1, 0)
-        model.axis = vector(1, 0, 0)
-        # Reposition it
-        model.rotate(angle=radians(self.rotations.x), axis=vector(1, 0, 0))
-        model.rotate(angle=radians(self.rotations.y), axis=vector(0, 1, 0))
-        model.rotate(angle=radians(self.rotations.z), axis=vector(0, 0, 1))

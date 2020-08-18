@@ -10,7 +10,7 @@ imu = RobotImu()
 mag_min = vp.vector(0, 0, 0)
 mag_max = vp.vector(0, 0, 0)
 
-# imu.magnetometer_offsets = magnetometer_offsets
+imu.magnetometer_offsets = magnetometer_offsets
 scatter_xy = vp.gdots(color=vp.color.red)
 scatter_yz = vp.gdots(color=vp.color.green)
 scatter_zx = vp.gdots(color=vp.color.blue)
@@ -28,7 +28,6 @@ while True:
     mag_max.z = max(mag_max.z, mag.z)
     offset = (mag_max + mag_min) / 2
 
-    cal.update(mag)
     print(f"Magnetometer: {mag}. Offsets: {offset}")
     scatter_xy.plot(mag.x, mag.y)
     scatter_yz.plot(mag.y, mag.z)

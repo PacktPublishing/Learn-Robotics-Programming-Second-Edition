@@ -11,5 +11,5 @@ while True:
     vp.rate(100)
     accel = imu.read_accelerometer()
     logging.info(f"Accelerometer: {accel}")
-    robot.axis = vp.vector(1, 0, 0)
-    robot.up = imu_to_vpython(vp.vector(-accel.x, -accel.y, accel.z))
+    robot.axis = vp.vector(-1, 0, 0)
+    robot.up = imu_to_vpython(accel)

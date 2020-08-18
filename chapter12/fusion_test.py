@@ -13,7 +13,6 @@ imu.gyro_offsets = gyro_offsets
 imu.magnetometer_offsets = magnetometer_offsets
 
 f = fusion.Fusion(timediff=time_diff)
-
 start_cal_time = time.time()
 
 def stop_function():
@@ -30,15 +29,18 @@ def getxyz():
 last_time = time.time()
 update_sleep = 1/10000 # 10 hz
 settle_time = 10
+
+
 while True:
 
     # mag_v = imu.read_magnetometer()
     # mag = (-mag_v.z, mag_v.x, -mag_v.y)
-    acc_v = imu.read_accelerometer()
-    acc = (acc_v.z, acc_v.x, -acc_v.y)
+    acc_v = -imu.read_accelerometer()
+    # acc = (acc_v.z, acc_v.x, -acc_v.y)
+    acc = (acc_v.x, acc_v.y, acc_v.z)
     gyro_v = imu.read_gyroscope()
-    gyro = (gyro_v.z, gyro_v.x, gyro_v.y)
-    # gyro = (0, 0, 0)
+    # gyro = (gyro_v.z, gyro_v.x, gyro_v.y)
+    gyro = (0, 0, 0)
     # acc = (0.001, 0.001, -1)
     # f.update(acc, gyro, mag, ts=time.time())
     f.update_nomag(acc, gyro, ts=time.time())

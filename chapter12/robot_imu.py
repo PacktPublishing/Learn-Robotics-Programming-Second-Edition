@@ -15,25 +15,32 @@ class RobotImu:
         """Read a temperature in degrees C."""
         return self._imu.read_temperature()
 
-    def read_accelerometer(self):
-        """Return prescaled accelerometer data in g's"""
-        accel_x, accel_y, accel_z, _, _, _ = self._imu.read_accelerometer_gyro_data()
-        return vector(accel_x, accel_y, accel_z)
+    def make_body_vector(self, x, y, z):
+        """Make a body vector from the IMU vector. Make the body transformations -
+        taking the IMU mounting into consideration.
+        Rotating 180 around the X axis."""
+        return vector(x, -y, -z)
 
     def read_gyroscope(self):
         """Return prescaled gyro data"""
-        _, _, _, gyro_x, gyro_y, gyro_z = self._imu.read_accelerometer_gyro_data()
-        return vector(gyro_x, gyro_y, gyro_z) - self.gyro_offsets
+        _, _, _, x, y, z = self._imu.read_accelerometer_gyro_data()
+        return self.make_body_vector(x, y, z) - self.gyro_offsets
+
+    def read_accelerometer(self):
+        """Return prescaled accelerometer data in g's"""
+        accel_x, accel_y, accel_z, _, _, _ = self._imu.read_accelerometer_gyro_data()
+        return self.make_body_vector(accel_x, accel_y, accel_z)
 
     def read_magnetometer(self):
         """Return magnetometer data"""
         mag_x, mag_y, mag_z = self._imu.read_magnetometer_data()
-        return vector(mag_x, mag_z, -mag_y) - self.magnetometer_offsets
+        return self.make_body_vector(mag_x, mag_z, mag_y) - self.magnetometer_offsets
 
 
 def imu_to_vpython(original):
-    """convert our robot IMU coords into VPython coordinates"""
-    return vector(-original.x, original.z, original.y)
+    """convert our robot IMU coords into VPython coordinates.
+    Rotating 90 degrees around the X axis"""
+    return vector(original.x, -original.z, original.y)
 
 
 class GyroIntegrator:

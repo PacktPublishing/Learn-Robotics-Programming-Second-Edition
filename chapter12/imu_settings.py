@@ -1,3 +1,3 @@
 from vpython import vector
-gyro_offsets = vector(-0.534351, 0.507634, -0.416031)
-magnetometer_offsets = vector(50.1, -14.250, 12.150)
+gyro_offsets = vector(-0.614504, -0.69084, 0.366412)
+magnetometer_offsets = vector(28.05, 5.475, 3.825)

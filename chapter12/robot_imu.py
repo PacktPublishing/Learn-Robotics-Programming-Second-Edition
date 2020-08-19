@@ -8,8 +8,8 @@ class RobotImu:
     """Define a common interface to an inertial measurement unit with temperature"""
     def __init__(self):
         self._imu = ICM20948()
-        self.magnetometer_offsets = vector(0, 0, 0)
         self.gyro_offsets = vector(0, 0, 0)
+        self.magnetometer_offsets = vector(0, 0, 0)
 
     def read_temperature(self):
         """Read a temperature in degrees C."""
@@ -34,7 +34,7 @@ class RobotImu:
     def read_magnetometer(self):
         """Return magnetometer data"""
         mag_x, mag_y, mag_z = self._imu.read_magnetometer_data()
-        return self.make_body_vector(mag_x, mag_z, mag_y) - self.magnetometer_offsets
+        return vector(mag_x, mag_y, mag_z) - self.magnetometer_offsets
 
 
 class GyroIntegrator:

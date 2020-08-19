@@ -6,11 +6,12 @@ from imu_settings import magnetometer_offsets
 
 logging.basicConfig(level=logging.INFO)
 imu = RobotImu()
+imu.magnetometer_offsets = magnetometer_offsets
 
 mag_min = vp.vector(0, 0, 0)
 mag_max = vp.vector(0, 0, 0)
 
-imu.magnetometer_offsets = magnetometer_offsets
+
 scatter_xy = vp.gdots(color=vp.color.red)
 scatter_yz = vp.gdots(color=vp.color.green)
 scatter_zx = vp.gdots(color=vp.color.blue)

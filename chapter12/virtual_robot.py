@@ -37,4 +37,5 @@ if __name__ == "__main__":
     x_arrow = vp.arrow(axis=vp.vector(200, 0, 0), color=vp.color.red)
     y_arrow = vp.arrow(axis=vp.vector(0, 200, 0), color=vp.color.green)
     z_arrow = vp.arrow(axis=vp.vector(0, 0, 200), color=vp.color.blue)
-    make_robot()
+    robot=make_robot()
+    print(robot.up)

@@ -1,5 +1,5 @@
 from icm20948 import ICM20948
-from vpython import vector
+from vpython import vector, degrees, atan2
 import time
 import logging
 
@@ -21,9 +21,15 @@ class RobotImu:
         return vector(x, y, z) - self.gyro_offsets
 
     def read_accelerometer(self):
-        """Return prescaled accelerometer data in g's"""
+        """Return accelerometer data"""
         accel_x, accel_y, accel_z, _, _, _ = self._imu.read_accelerometer_gyro_data()
-        return self.make_body_vector(accel_x, accel_y, accel_z)
+        return vector(accel_x, accel_y, accel_z)
+
+    def read_accelerometer_pitch_and_roll(self):
+        accel = self.read_accelerometer()
+        pitch = degrees(-atan2(accel.x, accel.z))
+        roll = degrees(atan2(accel.y, accel.z))
+        return pitch, roll
 
     def read_magnetometer(self):
         """Return magnetometer data"""

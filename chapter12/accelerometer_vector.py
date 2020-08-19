@@ -1,16 +1,17 @@
 import vpython as vp
 import logging
 from robot_imu import RobotImu
+from virtual_robot import robot_view
 
 logging.basicConfig(level=logging.INFO)
 imu = RobotImu()
+robot_view()
 
 accel_arrow = vp.arrow(axis=vp.vector(0, 1, 0))
 x_arrow = vp.arrow(axis=vp.vector(1, 0, 0), color=vp.color.red)
 y_arrow = vp.arrow(axis=vp.vector(0, 1, 0), color=vp.color.green)
 z_arrow = vp.arrow(axis=vp.vector(0, 0, 1), color=vp.color.blue)
-vp.scene.axis = vp.vector(-2, -1, -1)
-vp.scene.up = vp.vector(0, 0, 1)
+
 while True:
     vp.rate(100)
     accel = imu.read_accelerometer()

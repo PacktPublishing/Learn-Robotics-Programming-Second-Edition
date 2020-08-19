@@ -28,7 +28,7 @@ while True:
     mag_max.z = max(mag_max.z, mag.z)
     offset = (mag_max + mag_min) / 2
 
-    print(f"Magnetometer: {mag}. Offsets: {offset}")
+    print(f"Magnetometer: {mag}. Offsets: {offset}. Min: {mag_min}, Max: {mag_max}")
     scatter_xy.plot(mag.x, mag.y)
     scatter_yz.plot(mag.y, mag.z)
     scatter_zx.plot(mag.z, mag.x)

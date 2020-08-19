@@ -1,5 +1,4 @@
 import vpython as vp
-# import time
 import logging
 from robot_imu import RobotImu
 from imu_settings import magnetometer_offsets
@@ -19,6 +18,8 @@ while True:
     vp.rate(100)
 
     mag = imu.read_magnetometer()
-    logging.info(f"Magnetometer: {mag}")
     mag_arrow.axis = vp.vector(mag.x, 0, mag.z)
     mag_arrow.length = 1
+    angle = vp.degrees(vp.atan2(mag.z, mag.x))
+    print(f"Magnetometer: {mag}, Heading: {angle:.2f}")
+

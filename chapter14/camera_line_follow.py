@@ -13,16 +13,21 @@ from robot import Robot
 class LineFollowingBehavior:
     def __init__(self, robot):
         self.robot = robot
-        self.check_row = 85
+        self.check_row = int(camera_stream.size[1] * 0.85)
         self.mag_threshold = 10
         self.width_threshold = 20
         self.center = 160
         self.running = False
-        self.speed = 80
+        self.speed = 60
         # colors
-        self.crosshair_color = [0, 255, 0] # green
-        self.line_middle_color = [0, 0, 255] # red
-        self.graph_color = [255, 0, 0 ] # blue
+        self.crosshair_color = [0, 255, 0]  # green
+        self.line_middle_color = [128, 128, 255]  # red
+        self.graph_color = [255, 128, 128]  # blue
+        self.text_color = [50, 255, 50] # light green
+        self.text_font = cv2.FONT_HERSHEY_SIMPLEX
+        self.text_scale = 1
+        self.last_error = 0
+        self.last_value = 0
 
     def process_control(self):
         instruction = get_control_instruction()
@@ -41,10 +46,12 @@ class LineFollowingBehavior:
         for x, item in enumerate(data):
             if last is None:
                 last = item
-            cv2.line(frame, (x + 1, last + 40), (x + 2, item + 40), self.graph_color)
+            cv2.line(frame, (x + 1, last + 100), (x + 2, item + 100), self.graph_color)
             last = item
 
-    def make_display(self, frame, x, lowest, highest, diff):
+    def make_display(self, grey_img, frame, x, lowest, highest, diff, mag):
+        # convert the blurred one to colour
+        grey_frame = cv2.cvtColor(grey_img, cv2.COLOR_GRAY2BGR)
         # First, lets plot the center on it.
         cv2.line(frame, (self.center - 4, self.check_row), (self.center + 4, self.check_row), self.crosshair_color)
         cv2.line(frame, (self.center, self.check_row - 4), (self.center, self.check_row + 4), self.crosshair_color)
@@ -54,10 +61,14 @@ class LineFollowingBehavior:
         cv2.line(frame, (lowest, self.check_row - 4), (lowest, self.check_row + 4), self.line_middle_color)
         cv2.line(frame, (highest, self.check_row - 4), (highest, self.check_row + 4), self.line_middle_color)
         # finally the graph
-        graph_frame = np.zeros((camera_stream.size[0], camera_stream.size[1], 3), np.uint8)
+        #   huh - we are getting squares - 240 by 240, from the camera?
+        graph_frame = np.zeros((camera_stream.size[1], camera_stream.size[1], 3), np.uint8)
         self.make_cv2_simple_graph(graph_frame, diff)
+        cv2.putText(graph_frame, f"Err: {self.last_error}", org=(0, 120), fontFace=self.text_font, fontScale=self.text_scale, color=self.text_color)
+        cv2.putText(graph_frame, f"Val: {self.last_value}", org=(0, 160), fontFace=self.text_font, fontScale=self.text_scale, color=self.text_color)
+        cv2.putText(graph_frame, f"Mag: {mag}", org=(0, 200), fontFace=self.text_font, fontScale=self.text_scale, color=self.text_color)
         # concatenate these
-        display_frame = np.concatenate((frame, graph_frame), axis=1)
+        display_frame = np.concatenate((grey_frame, frame, graph_frame), axis=1)
         encoded_bytes = camera_stream.get_encoded_bytes_for_frame(display_frame)
         put_output_image(encoded_bytes)
 
@@ -82,18 +93,19 @@ class LineFollowingBehavior:
         middle = (highest + lowest) // 2
         # now find the width between them
         width = abs(highest - lowest)
+        mag = max_d - min_d
         # make the display
-        self.make_display(frame, middle, lowest, highest, diff)
-        return middle, width, max_d - min_d
+        self.make_display(grey_img, frame, middle, lowest, highest, diff, mag)
+        return middle, width, mag
 
     def run(self):
         self.robot.set_pan(0)
         self.robot.set_tilt(90)
         camera = camera_stream.setup_camera()
-        direction_pid = PIController(proportional_constant=0.25,
-                                     integral_constant=0.05, windup_limit=400)
+        direction_pid = PIController(proportional_constant=0.4,
+                                     integral_constant=0.01, windup_limit=400)
 
-        time.sleep(0.1)
+        time.sleep(1)
         self.robot.servos.stop_all()
         print("Setup Complete")
         last_time = time.time()
@@ -103,18 +115,26 @@ class LineFollowingBehavior:
             if self.running and width > self.width_threshold and magnitude > self.mag_threshold:
                 direction_error = self.center - x
                 new_time = time.time()
-                direction_value = direction_pid.get_value(direction_error, delta_time=new_time - last_time)
+                dt = new_time - last_time
+                direction_value = direction_pid.get_value(direction_error, delta_time=dt)
                 last_time = new_time
 
-                print(f"{x}, {width}, {direction_value:2f}")
+                print(f"Error: {direction_error}, Width: {width}, Value:{direction_value:2f}, t: {new_time}")
+                self.last_error = direction_error
+                self.last_value = direction_value
+                speed = self.speed
+                speed -= abs(direction_value) / 3
                 self.robot.set_left(self.speed - direction_value)
                 self.robot.set_right(self.speed + direction_value)
             else:
                 self.robot.stop_motors()
                 if not self.running:
                     direction_pid.reset()
+                last_time = time.time()
 
 
+import logging
+logging.basicConfig(level=logging.DEBUG)
 print("Setting up")
 behavior = LineFollowingBehavior(Robot())
 process = start_server_process('color_track_behavior.html')

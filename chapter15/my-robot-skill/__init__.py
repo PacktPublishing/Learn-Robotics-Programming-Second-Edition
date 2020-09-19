@@ -14,10 +14,19 @@ class MyRobot(MycroftSkill):
                     .require("Robot")
                     .require("TestRainbow"))
     def handle_test_rainbow(self, message):
+        self.handle_control('/run/test_rainbow', 'TestingRainbow')
+
+    @intent_handler(IntentBuilder("")
+                    .require("Robot")
+                    .require("stop"))
+    def handle_stop(self, message):
+        self.handle_control('/stop', 'stopping')
+
+    def handle_control(self, end_point, dialog_verb):
         try:
-            requests.post(self.base_url + "/run/test_rainbow")
+            requests.post(self.base_url + end_point)
             self.speak_dialog('Robot')
-            self.speak_dialog('TestingRainbow')
+            self.speak_dialog(dialog_verb)
         except:
             self.speak_dialog("UnableToReach")
             LOG.exception("Unable to reach the robot")

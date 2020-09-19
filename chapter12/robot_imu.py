@@ -34,7 +34,7 @@ class RobotImu:
     def read_magnetometer(self):
         """Return magnetometer data"""
         mag_x, mag_y, mag_z = self._imu.read_magnetometer_data()
-        return vector(mag_x, mag_y, mag_z) - self.magnetometer_offsets
+        return vector(mag_x, -mag_y, -mag_z) - self.magnetometer_offsets
 
 
 class GyroIntegrator:

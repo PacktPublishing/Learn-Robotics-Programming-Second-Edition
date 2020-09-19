@@ -1,7 +1,7 @@
 import vpython as vp
 import logging
 from robot_imu import RobotImu
-from virtual_robot import robot_view
+from robot_pose import robot_view
 
 logging.basicConfig(level=logging.INFO)
 imu = RobotImu()

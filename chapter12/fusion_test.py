@@ -10,10 +10,10 @@ def time_diff(start, end):
 logging.basicConfig(level=logging.INFO)
 imu = RobotImu()
 imu.gyro_offsets = gyro_offsets
-# imu.magnetometer_offsets = magnetometer_offsets
+imu.magnetometer_offsets = magnetometer_offsets
 
 f = fusion.Fusion(timediff=time_diff)
-f.magbias = (magnetometer_offsets.x, magnetometer_offsets.y, magnetometer_offsets.z)
+# f.magbias = (magnetometer_offsets.x, magnetometer_offsets.y, magnetometer_offsets.z)
 # start_cal_time = time.time()
 #
 # def stop_function():
@@ -36,8 +36,8 @@ heading_min = None
 
 while True:
     mag_v = imu.read_magnetometer()
-    mag = mag_v.x, mag_v.y, mag_v.z
-    acc_v = imu.read_accelerometer()
+    mag = -mag_v.x, mag_v.y, mag_v.z
+    acc_v = -imu.read_accelerometer()
     acc = acc_v.x, acc_v.y, acc_v.z
     gyro_v = -imu.read_gyroscope()
     gyro = (gyro_v.x, gyro_v.y, gyro_v.z)
@@ -57,6 +57,6 @@ while True:
             heading_max = f.heading
         print(f"Last mag reading: {mag}")
         print(f"Pitch: {f.pitch:.2f}, Roll: {f.roll:.2f}, Heading: {f.heading:.2f}")
-        print(f"Heading min: {heading_min:2f}, Heading max: {heading_max:2f}")
+        # print(f"Heading min: {heading_min:2f}, Heading max: {heading_max:2f}")
 
         last_time = time.time()

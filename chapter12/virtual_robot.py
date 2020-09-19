@@ -1,5 +1,5 @@
 import vpython as vp
-from vpython import vector
+from robot_pose import robot_view
 
 
 def make_robot():
@@ -25,11 +25,6 @@ def make_robot():
           pos=vp.vector(-80, -6, -30),
           axis=vp.vector(0, 1, 0))
     return vp.compound([base, wheel_l, wheel_r, rear_castor])
-
-
-def robot_view():
-    vp.scene.axis = vp.vector(-3, -1, -1)
-    vp.scene.up = vp.vector(0, 0, 1)
 
 
 if __name__ == "__main__":

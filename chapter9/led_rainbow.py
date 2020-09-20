@@ -10,4 +10,3 @@ def show_rainbow(leds, led_range):
         rgb = colorsys.hsv_to_rgb(hue, 1.0, 0.6)
         rgb = [int(c*255) for c in rgb]
         leds.set_one(led_address, rgb)
-    leds.show()

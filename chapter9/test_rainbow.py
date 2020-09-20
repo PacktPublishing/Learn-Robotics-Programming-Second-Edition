@@ -7,6 +7,7 @@ bot = Robot()
 while True:
     print("on")
     show_rainbow(bot.leds, range(bot.leds.count))
+    bot.leds.show()
     sleep(0.5)
     print("off")
     bot.leds.clear()

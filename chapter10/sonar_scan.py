@@ -3,14 +3,14 @@ import math
 
 import matplotlib.pyplot as plt
 
-import robot
+from robot import Robot
 
 start_scan =0
 lower_bound = -90
 upper_bound = 90
 scan_step = 5
 
-the_robot = robot.Robot()
+the_robot = Robot()
 the_robot.set_tilt(0)
 
 scan_data = {}

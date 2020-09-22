@@ -1,6 +1,8 @@
 from Raspi_MotorHAT.Raspi_PWM_Servo_Driver import PWM
 
 class Servos:
+    """PCA 9865 Servo motors"""
+
     def __init__(self, addr=0x6f, deflect_90_in_ms = 0.5):
         """addr: The i2c address of the PWM chip.
         deflect_90_in_ms: set this to calibrate the servo motors. 
@@ -27,11 +29,12 @@ class Servos:
         self.channels = [0, 1, 14, 15]
 
     def stop_all(self):
-        # 0 in start is nothing, 4096 sets the OFF bit.
-        self._pwm.setPWM(self.channels[0], 0, 4096)
-        self._pwm.setPWM(self.channels[1], 0, 4096)
-        self._pwm.setPWM(self.channels[2], 0, 4096)
-        self._pwm.setPWM(self.channels[3], 0, 4096)
+        # 0 in start is nothing
+        off_bit = 4096  # bit 12 is the OFF bit.
+        self._pwm.setPWM(self.channels[0], 0, off_bit)
+        self._pwm.setPWM(self.channels[1], 0, off_bit)
+        self._pwm.setPWM(self.channels[2], 0, off_bit)
+        self._pwm.setPWM(self.channels[3], 0, off_bit)
 
     def _convert_degrees_to_steps(self, position):
         return int(self.servo_mid_point_steps + (position * self.steps_per_degree))

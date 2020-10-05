@@ -20,5 +20,5 @@ for n in range(500):
     offset = (gyro_min + gyro_max) / 2
     noise = gyro_max - gyro_min
 
-    print(f"Gyro reading: {gyro}. Zero offset: {offset}. Noise: {noise}")
     time.sleep(.01)
+print(f"Gyro reading: {gyro}. Zero offset: {offset}. Noise: {noise}")

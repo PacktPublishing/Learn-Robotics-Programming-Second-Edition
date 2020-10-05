@@ -14,6 +14,7 @@ while True:
     vp.rate(100)
     elapsed = time.time() - start
     gyro = imu.read_gyroscope()
+    print(f"Gyro x: {gyro.x:.2f}, y: {gyro.y:.2f}, z: {gyro.z:.2f}")
     graph_x.plot(elapsed, gyro.x)
     graph_y.plot(elapsed, gyro.y)
     graph_z.plot(elapsed, gyro.z)

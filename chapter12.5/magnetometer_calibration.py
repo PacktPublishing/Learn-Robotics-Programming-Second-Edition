@@ -5,8 +5,7 @@ from imu_settings import magnetometer_offsets
 
 
 logging.basicConfig(level=logging.INFO)
-imu = RobotImu()
-imu.magnetometer_offsets = magnetometer_offsets
+imu = RobotImu(magnetometer_offsets=magnetometer_offsets)
 
 mag_min = vp.vector(0, 0, 0)
 mag_max = vp.vector(0, 0, 0)
@@ -30,6 +29,7 @@ while True:
     offset = (mag_max + mag_min) / 2
 
     print(f"Magnetometer: {mag}. Offsets: {offset}. Min: {mag_min}, Max: {mag_max}")
+    vp.points(pos=[mag], radius=1, color=vp.color.red)
     scatter_xy.plot(mag.x, mag.y)
     scatter_yz.plot(mag.y, mag.z)
     scatter_zx.plot(mag.z, mag.x)

@@ -22,8 +22,8 @@ while True:
     vp.rate(100)
     dt, elapsed = timer.update()
     gyro = imu.read_gyroscope()
-    pitch += gyro.x * dt
-    roll += gyro.y * dt
+    roll += gyro.x * dt
+    pitch += gyro.y * dt
     yaw += gyro.z * dt
     print(f"Elapsed: {elapsed:.2f}, Pitch: {pitch:.2f}, Roll: {roll:.2f}, Yaw: {yaw:.2f}")
     graph_x.plot(elapsed, pitch)

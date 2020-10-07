@@ -21,7 +21,7 @@ class Robot:
         # Setup the Leds
         self.leds = leds_led_shim.Leds()
         # Set up servo motors for pan and tilt.
-        self.servos = Servos(addr=motorhat_addr)
+        self.servos = Servos(addr=motorhat_addr, deflect_90_in_ms=1)
         
         # Setup The Distance Sensors
         self.left_distance_sensor = DistanceSensor(echo=17, trigger=27, queue_len=2)

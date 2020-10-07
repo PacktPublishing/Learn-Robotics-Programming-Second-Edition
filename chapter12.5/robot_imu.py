@@ -15,10 +15,10 @@ class ComplementaryFilter:
 
 class RobotImu:
     """Define a common interface to an inertial measurement unit with temperature"""
-    def __init__(self, gyro_offsets=None):
+    def __init__(self, gyro_offsets=None, magnetometer_offsets=None):
         self._imu = ICM20948()
         self.gyro_offsets = gyro_offsets or vector(0, 0, 0)
-        self.magnetometer_offsets = vector(0, 0, 0)
+        self.magnetometer_offsets = magnetometer_offsets or vector(0, 0, 0)
 
     def read_temperature(self):
         """Read a temperature in degrees C."""
@@ -38,7 +38,9 @@ class RobotImu:
         """Convert cartesian coordinates to spherical coordinates.
         Work in degrees because the gyro does"""
         accel = self.read_accelerometer()
-        pitch = degrees(atan2(accel.x, accel.z))
+        # pitch is about the y axis (use X, and Z)
+        pitch = degrees(-atan2(accel.x, accel.z))
+        # roll is about the x axis (use Y and Z)
         roll = degrees(atan2(accel.y, accel.z))
         return pitch, roll
 
@@ -46,3 +48,27 @@ class RobotImu:
         """Return magnetometer data"""
         mag_x, mag_y, mag_z = self._imu.read_magnetometer_data()
         return vector(mag_x, -mag_y, -mag_z) - self.magnetometer_offsets
+
+
+class Imu9DofFusion:
+    def __init__(self, imu, filter_value=0.95):
+        self.imu = imu
+        self.filter = ComplementaryFilter(filter_value).filter
+        self.pitch = 0
+        self.roll = 0
+        self.yaw = 0
+
+    def update(self, dt):
+        accel_pitch, accel_roll = self.imu.read_accelerometer_pitch_and_roll()
+        gyro = self.imu.read_gyroscope()
+        self.pitch = self.filter(self.pitch + gyro.y * dt, accel_pitch)
+        self.roll = self.filter(self.roll + gyro.x * dt, accel_roll)
+        # read the magnetometer
+        mag = self.imu.read_magnetometer()
+        # Compensate for pitch and tilt
+        mag.rotate(self.pitch, vector(0, 1, 0))
+        mag.rotate(self.roll, vector(1, 0, 0))
+
+        # calculate yaw - using the gyro to filter.
+        mag_yaw = -degrees(atan2(mag.y, mag.x))
+        self.yaw = self.filter(self.yaw + gyro.z * dt, mag_yaw)

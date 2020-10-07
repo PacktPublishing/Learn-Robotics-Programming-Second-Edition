@@ -20,12 +20,10 @@ while True:
     pitch = filter(pitch, new_pitch)
     roll = filter(roll, new_roll)
 
-    print(f"Pitch: {pitch}, Roll: {roll}")
+    print(f"Pitch: {pitch:.2f}, Roll: {roll:.2f}")
     # reset the model
     model.up = vp.vector(0, 1, 0)
     model.axis = vp.vector(1, 0, 0)
     # Reposition it
-    model.rotate(angle=vp.radians(roll),
-                 axis=vp.vector(1, 0, 0))
-    model.rotate(angle=vp.radians(pitch),
-                 axis=vp.vector(0, -1, 0))
+    model.rotate(angle=vp.radians(roll), axis=vp.vector(1, 0, 0))
+    model.rotate(angle=vp.radians(pitch), axis=vp.vector(0, 1, 0))

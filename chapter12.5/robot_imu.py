@@ -1,7 +1,8 @@
 from icm20948 import ICM20948
 from vpython import vector, degrees, atan2
-import time
 import logging
+
+logger = logging.getLogger(__name__)
 
 
 class ComplementaryFilter:
@@ -14,9 +15,9 @@ class ComplementaryFilter:
 
 class RobotImu:
     """Define a common interface to an inertial measurement unit with temperature"""
-    def __init__(self):
+    def __init__(self, gyro_offsets=None):
         self._imu = ICM20948()
-        self.gyro_offsets = vector(0, 0, 0)
+        self.gyro_offsets = gyro_offsets or vector(0, 0, 0)
         self.magnetometer_offsets = vector(0, 0, 0)
 
     def read_temperature(self):
@@ -45,23 +46,3 @@ class RobotImu:
         """Return magnetometer data"""
         mag_x, mag_y, mag_z = self._imu.read_magnetometer_data()
         return vector(mag_x, -mag_y, -mag_z) - self.magnetometer_offsets
-
-
-class GyroIntegrator:
-    def __init__(self, imu):
-        self.imu = imu
-        self.rotations = vector(0, 0, 0)
-        self.last_time = time.time()
-
-    def delta_time(self):
-        new_time = time.time()
-        delta_time = new_time - self.last_time
-        self.last_time = new_time
-        return delta_time
-
-    def update(self):
-        # Accumulate gyro readings scaled by delta time
-        gyro = self.imu.read_gyroscope()
-        self.rotations += gyro * self.delta_time()
-        logging.info(f"Gyroscope: {gyro}, "
-                     f"rotations: {self.rotations}")

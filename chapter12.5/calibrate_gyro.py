@@ -18,7 +18,7 @@ for n in range(500):
     gyro_max.z = max(gyro_max.z, gyro.z)
 
     offset = (gyro_min + gyro_max) / 2
-    noise = gyro_max - gyro_min
 
     time.sleep(.01)
-print(f"Gyro reading: {gyro}. Zero offset: {offset}. Noise: {noise}")
+
+print(f"Gyro reading: {gyro}. Zero offset: {offset}.")

@@ -1,13 +1,13 @@
 import vpython as vp
 import logging
 from robot_imu import RobotImu, GyroIntegrator
-# from imu_settings import gyro_offsets
+import imu_settings
 import virtual_robot
 
 
 logging.basicConfig(level=logging.INFO)
-imu = RobotImu()
-# imu.gyro_offsets = gyro_offsets
+imu = RobotImu(gyro_offsets=imu_settings.gyro_offsets)
+
 g_i = GyroIntegrator(imu)
 model = virtual_robot.make_robot()
 virtual_robot.robot_view()

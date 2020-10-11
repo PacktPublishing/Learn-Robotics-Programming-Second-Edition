@@ -21,4 +21,4 @@ for n in range(500):
 
     time.sleep(.01)
 
-print(f"Gyro reading: {gyro}. Zero offset: {offset}.")
+print(f"Zero offset: {offset}.")

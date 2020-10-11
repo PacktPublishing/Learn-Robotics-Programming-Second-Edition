@@ -8,14 +8,17 @@ logger = logging.getLogger(__name__)
 class ComplementaryFilter:
     def __init__(self, filter_left=0.9):
         self.filter_left = filter_left
+        self.filter_right = 1.0 - filter_left
 
     def filter(self, left, right):
-        return self.filter_left * left + (1.0 - self.filter_left) * right
+        return self.filter_left * left + \
+               self.filter_right * right
 
 
 class RobotImu:
     """Define a common interface to an inertial measurement unit with temperature"""
-    def __init__(self, gyro_offsets=None, magnetometer_offsets=None):
+    def __init__(self, gyro_offsets=None,
+                 magnetometer_offsets=None):
         self._imu = ICM20948()
         self.gyro_offsets = gyro_offsets or vector(0, 0, 0)
         self.magnetometer_offsets = magnetometer_offsets or vector(0, 0, 0)
@@ -48,6 +51,23 @@ class RobotImu:
         """Return magnetometer data"""
         mag_x, mag_y, mag_z = self._imu.read_magnetometer_data()
         return vector(mag_x, -mag_y, -mag_z) - self.magnetometer_offsets
+
+
+class ImuFusion:
+    def __init__(self, imu, filter_value=0.95):
+        self.imu = imu
+        self.filter = ComplementaryFilter(filter_value).filter
+        self.pitch = 0
+        self.roll = 0
+
+    def update(self, dt):
+        accel_pitch, accel_roll = self.imu.read_accelerometer_pitch_and_roll()
+        gyro = self.imu.read_gyroscope()
+        # By filtering 95% gyro (which changes quickly, but drifts) with the 5% accel, which is absolute, but is slow when filtered
+        # We get the best of both sensors.
+
+        self.pitch = self.filter(self.pitch + gyro.y * dt, accel_pitch)
+        self.roll = self.filter(self.roll + gyro.x * dt, accel_roll)
 
 
 class Imu9DofFusion:

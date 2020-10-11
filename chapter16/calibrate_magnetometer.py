@@ -1,8 +1,8 @@
 import vpython as vp
 from robot_imu import RobotImu
-from imu_settings import magnetometer_offsets
+from imu_settings import mag_offsets
 
-imu = RobotImu(magnetometer_offsets=magnetometer_offsets)
+imu = RobotImu(mag_offsets=mag_offsets)
 
 mag_min = vp.vector(0, 0, 0)
 mag_max = vp.vector(0, 0, 0)

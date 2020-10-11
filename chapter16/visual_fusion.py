@@ -1,14 +1,12 @@
 import vpython as vp
-import logging
-from robot_imu import RobotImu, Imu9DofFusion
+from robot_imu import RobotImu, ImuFusion
 from delta_timer import DeltaTimer
 import imu_settings
 import virtual_robot
 
-logging.basicConfig(level=logging.INFO)
-imu = RobotImu(magnetometer_offsets=imu_settings.magnetometer_offsets,
-               gyro_offsets=imu_settings.gyro_offsets)
-fusion = Imu9DofFusion(imu)
+imu = RobotImu(gyro_offsets=imu_settings.gyro_offsets,
+               mag_offsets=imu_settings.mag_offsets)
+fusion = ImuFusion(imu)
 
 model = virtual_robot.make_robot()
 virtual_robot.robot_view()

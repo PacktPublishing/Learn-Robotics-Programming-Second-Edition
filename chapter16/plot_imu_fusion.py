@@ -1,11 +1,11 @@
 import vpython as vp
-from robot_imu import RobotImu, Imu9DofFusion
+from robot_imu import RobotImu, ImuFusion
 from delta_timer import DeltaTimer
 import imu_settings
 
-imu = RobotImu(magnetometer_offsets=imu_settings.magnetometer_offsets,
-               gyro_offsets=imu_settings.gyro_offsets)
-fusion = Imu9DofFusion(imu)
+imu = RobotImu(gyro_offsets=imu_settings.gyro_offsets,
+               mag_offsets=imu_settings.mag_offsets)
+fusion = ImuFusion(imu)
 
 vp.graph(xmin=0, xmax=60, scroll=True)
 graph_pitch = vp.gcurve(color=vp.color.red)

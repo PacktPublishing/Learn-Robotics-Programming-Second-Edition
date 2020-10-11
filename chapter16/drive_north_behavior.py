@@ -1,14 +1,14 @@
 """This behavior will turn to seek north, and then drive that way"""
-from robot_imu import RobotImu, Imu9DofFusion
+from robot_imu import RobotImu, ImuFusion
 from delta_timer import DeltaTimer
 from pid_controller import PIController
 from robot import Robot
 import imu_settings
 
 
-imu = RobotImu(magnetometer_offsets=imu_settings.magnetometer_offsets,
+imu = RobotImu(mag_offsets=imu_settings.mag_offsets,
                gyro_offsets=imu_settings.gyro_offsets)
-fusion = Imu9DofFusion(imu)
+fusion = ImuFusion(imu)
 timer = DeltaTimer()
 pid = PIController(0.7, 0.01)
 robot = Robot()

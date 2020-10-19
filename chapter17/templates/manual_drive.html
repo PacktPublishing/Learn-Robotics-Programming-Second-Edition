@@ -1,0 +1,35 @@
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+        <link rel="stylesheet" type="text/css" href="/static/display.css?">
+        <script src="/static/lib/jquery-3.3.1.min.js"></script>
+        <script src="/static/touch-slider.js?"></script>
+        <title>Manually Drive The Robot</title>
+    </head>
+    <body>
+        <svg id="left_slider" class="slider_track">
+            <circle cy="50%" cx="50%" r="15%" class="slider_tick"/>
+        </svg>
+        <a class="button" id="exitbutton">Exit</a>
+        <div id="video"><img src="{{ url_for('display') }}" /></div>
+        <svg id="right_slider" class="slider_track">
+            <circle cy="50%" cx="50%" r="15%" class="slider_tick"/>
+        </svg>
+        <script type="text/javascript">
+            function set_motor(name, speed) {
+                $.post('/control', {'command': 'set_' + name, 'speed': speed});
+            }
+            $(function () {
+                $('#exitbutton').click(function() {
+                    $.post('/control', {'command': 'exit'});
+                    window.location.replace('//' + window.location.host + ":5000");
+                });
+
+                var leftSlider = new Slider('left_slider', function(speed) {set_motor('left', speed);});
+                leftSlider.setup();
+                var rightSlider = new Slider('right_slider', function(speed) {set_motor('right', speed);});
+                rightSlider.setup();
+            });
+        </script>
+    </body>
+</html>

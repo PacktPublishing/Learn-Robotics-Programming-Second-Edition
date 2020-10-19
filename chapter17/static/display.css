@@ -1,0 +1,48 @@
+html, body {margin: 0; height: 100%; overflow: hidden}
+.slider_track {
+    width: 10vw;
+    height: 90vh;
+    border: 1px solid blue;
+    background-color: lightblue;
+}
+.slider_tick {
+    fill: mistyrose;
+}
+#left_slider {
+    position: absolute;
+    left: 5vw;
+    top: 5vh;
+}
+#right_slider {
+    position: absolute;
+    right: 5vw;
+    top: 5vh;
+}
+.button {
+    display: block;
+    height: 10vh;
+    text-align: center;
+    font-size: 2em;
+    line-height: 10vh;
+    text-decoration: none;
+    background-color: blue;
+    color: white;
+}
+#exitbutton {
+    position: absolute;
+    width: 40vw;
+    left: 30vw;
+    top: 5vh;
+}
+#video {
+    display: block;
+    margin-top: 20vh;
+    width: 80vmin;
+    height: 80vmin;
+    margin-left: auto;
+    margin-right: auto;
+}
+#video img {
+    width: 100%;
+    padding-bottom: 75%;
+}

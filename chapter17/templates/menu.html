@@ -19,7 +19,12 @@
 </body>
 <script>
     function run(url) {
-      $.post(url, '', response => $('#message').html(response))
+      $.post(url, '', response => {
+          $('#message').html(response.message);
+          if(response.redirect) {
+              window.location.replace('//' + window.location.hostname + ":5001");
+          }
+      })
     }
 </script>
 </html>

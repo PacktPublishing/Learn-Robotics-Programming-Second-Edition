@@ -52,3 +52,6 @@ class RobotModes(object):
             # That causes the behavior to clean up and exit.
             self.current_process.send_signal(subprocess.signal.SIGINT)
             self.current_process = None
+
+    def should_redirect(self, mode_name):
+        return self.mode_config[mode_name].get('server') is True and self.is_running()

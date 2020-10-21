@@ -28,21 +28,20 @@ html, body {margin: 0; height: 100%; overflow: hidden}
     background-color: blue;
     color: white;
 }
+
 #exitbutton {
-    position: absolute;
-    width: 40vw;
-    left: 30vw;
-    top: 5vh;
-}
-#video {
-    display: block;
-    margin-top: 20vh;
-    width: 80vmin;
-    height: 80vmin;
+    width: 40vh;
+    margin-top: 5vh;
     margin-left: auto;
     margin-right: auto;
 }
+
+#video {
+    text-align: center;
+}
+
 #video img {
-    width: 100%;
-    padding-bottom: 75%;
+    margin-top: 20vh;
+    width: 80vmin;
+    height: auto;
 }

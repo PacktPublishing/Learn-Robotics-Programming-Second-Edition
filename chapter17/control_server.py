@@ -11,6 +11,7 @@ mode_manager = RobotModes()
 def index():
     return render_template('menu.html', menu=mode_manager.menu_config)
 
+
 @app.route("/run/<mode_name>", methods=['POST'])
 def run(mode_name):
     # Use our robot app to run something with this mode_name
@@ -25,4 +26,4 @@ def stop():
     return "Stopped"
 
 
-app.run(host="0.0.0.0", debug=True)
+app.run(host="0.0.0.0")

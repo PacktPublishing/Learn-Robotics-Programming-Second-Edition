@@ -9,6 +9,12 @@ display_queue = Queue(maxsize=2)
 display_template = 'image_server.html'
 
 
+@app.after_request
+def add_header(response):
+    response.headers['Cache-Control'] = "no-cache, no-store, must-revalidate"
+    return response
+
+
 @app.route('/')
 def index():
     return render_template(display_template)

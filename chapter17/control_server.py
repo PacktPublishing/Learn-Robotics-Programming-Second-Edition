@@ -1,10 +1,20 @@
 from flask import Flask, render_template, jsonify
 from robot_modes import RobotModes
+from leds_led_shim import Leds
 
 # A Flask App contains all its routes.
 app = Flask(__name__)
 # Prepare our robot modes for use
 mode_manager = RobotModes()
+leds = Leds()
+leds.set_one(1, [0, 255, 0])
+leds.show()
+
+
+@app.after_request
+def add_header(response):
+    response.headers['Cache-Control'] = "no-cache, no-store, must-revalidate"
+    return response
 
 
 @app.route("/")
@@ -14,6 +24,12 @@ def index():
 
 @app.route("/run/<mode_name>", methods=['POST'])
 def run(mode_name):
+    global leds
+    if leds:
+        leds.clear()
+        leds.show()
+        leds = None
+
     # Use our robot app to run something with this mode_name
     mode_manager.run(mode_name)
     response = {'message': f'{mode_name} running'}

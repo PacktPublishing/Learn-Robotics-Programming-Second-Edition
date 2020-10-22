@@ -5,16 +5,30 @@ class RobotModes(object):
 
     # Mode config goes from a "mode_name" to a script to run. Configured for look up.
     mode_config = {
-        "avoid_behavior": "avoid_with_rainbows.py",
-        "circle_head": "circle_pan_tilt_behavior.py",
-        "test_leds": "leds_test.py",
-        "test_rainbow": "test_rainbow.py",
-        "straight_line": "straight_line_drive.py",
-        "square": "drive_square.py",
-        "line_following": "line_follow_behavior.py",
-        "color_track": "color_track_behavior.py",
-        "face_track": "face_track_behavior.py",
+        "avoid_behavior": {"script": "avoid_behavior.py"},
+        "circle_head": {"script": "circle_pan_tilt_behavior.py"},
+        "test_rainbow": {"script": "test_rainbow.py"},
+        "test_leds": {"script": "leds_test.py"},
+        "line_following": {"script": "line_follow_behavior.py", "server": True},
+        "color_track": {"script": "color_track_behavior.py", "server": True},
+        "face_track": {"script": "face_track_behavior.py", "server": True},
+        "manual_drive": {"script": "manual_drive.py", "server": True},
+        "behavior_line": {"script": "straight_line_drive.py"},
+        "drive_north": {"script": "drive_north.py"}
     }
+
+    menu_config = [
+        {"mode_name": "avoid_behavior", "text": "Avoid Behavior"},
+        {"mode_name": "circle_head", "text": "Circle Head"},
+        {"mode_name": "test_rainbow", "text": "LED Rainbow"},
+        {"mode_name": "test_leds", "text": "Test LEDs"},
+        {"mode_name": "line_following", "text": "Line Following"},
+        {"mode_name": "color_track", "text": "Color Tracking"},
+        {"mode_name": "face_track", "text": "Face Tracking"},
+        {"mode_name": "manual_drive", "text": "Drive Manually"},
+        {"mode_name": "behavior_line", "text": "Drive In A Line"},
+        {"mode_name": "drive_north", "text": "Drive North"}
+    ]
 
     def __init__(self):
         self.current_process = None
@@ -25,11 +39,11 @@ class RobotModes(object):
 
     def run(self, mode_name):
         """Run the mode as a subprocess, but not if we still have one running"""
-        if not self.is_running():
-            script = self.mode_config[mode_name]
-            self.current_process = subprocess.Popen(["python3", script])
-            return True
-        return False
+        while self.is_running():
+            self.stop()
+
+        script = self.mode_config[mode_name]['script']
+        self.current_process = subprocess.Popen(["python3", script])
 
     def stop(self):
         """Stop a process"""
@@ -38,3 +52,6 @@ class RobotModes(object):
             # That causes the behavior to clean up and exit.
             self.current_process.send_signal(subprocess.signal.SIGINT)
             self.current_process = None
+
+    def should_redirect(self, mode_name):
+        return self.mode_config[mode_name].get('server') is True and self.is_running()

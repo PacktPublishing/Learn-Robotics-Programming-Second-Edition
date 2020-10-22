@@ -1,7 +1,7 @@
 .DS_Store
 /.venv/
 /.vscode/
-/.idea/
+.idea/
 /ext_lib/
 *.pyc
 __pycache__

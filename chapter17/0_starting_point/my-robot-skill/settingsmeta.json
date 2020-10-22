@@ -1,0 +1,18 @@
+{
+    "base_url": "http://myrobot.local:5000",
+    "skillMetadata": {
+        "sections": [
+            {
+                "name": "Robot",
+                "fields": [
+                    {
+                        "name": "base_url",
+                        "type": "text",
+                        "label": "Base URL for the robot control server",
+                        "value": "https://myrobots.local:5000"
+                    }
+                ]
+            }
+        ]
+    }
+}

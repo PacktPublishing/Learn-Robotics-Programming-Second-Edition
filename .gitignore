@@ -3,3 +3,5 @@
 /.vscode/
 /.idea/
 /ext_lib/
+*.pyc
+__pycache__

@@ -1,0 +1,32 @@
+<html>
+<head>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <title>My Robot Menu</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="/static/display.css">
+</head>
+<body>
+  <h1>My Robot Menu</h1>
+    <p id="message"></p>
+    <ul class="menu">
+      {% for item in menu %}
+        <li>
+            <a class="button" href="#" onclick="run('/run/{{ item.mode_name }}')">
+                {{ item.text }}
+            </a>
+        </li>
+      {% endfor %}
+    <li><a class="button" href="#" onclick="run('/stop')">Stop</a></li>
+  </ul>
+</body>
+<script>
+    function run(url) {
+      $.post(url, '', response => {
+          $('#message').html(response.message);
+          if(response.redirect) {
+              setTimeout(() => window.location.replace('//' + window.location.hostname + ":5001"), 3000);
+          }
+      })
+    }
+</script>
+</html>

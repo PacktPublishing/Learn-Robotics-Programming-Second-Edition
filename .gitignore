@@ -1,1 +1,7 @@
 .DS_Store
+/.venv/
+/.vscode/
+.idea/
+/ext_lib/
+*.pyc
+__pycache__

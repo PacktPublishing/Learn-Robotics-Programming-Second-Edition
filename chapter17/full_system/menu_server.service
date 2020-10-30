@@ -1,0 +1,12 @@
+[Unit]
+Description=Robot Menu Web Service
+After=network.target
+
+[Install]
+WantedBy=multi-user.target
+
+[Service]
+WorkingDirectory=/home/pi
+User=pi
+Environment=LD_PRELOAD=/usr/lib/arm-linux-gnueabihf/libatomic.so.1
+ExecStart=/usr/bin/env python3 control_server.py

@@ -10,9 +10,9 @@ def make_robot():
     wheel_diameter = 70
     axle_x = 30             # wheel axle from
     axle_z = -20
-    rear_castor_position = vp.vector(-80, -6, -30)
-    rear_castor_radius = 14
-    rear_caster_thickness = 12
+    castor_position = vp.vector(-80, -6, -30)
+    castor_radius = 14
+    castor_thickness = 12
 
     base = vp.box(length=chassis_length,
                   height=chassis_thickness,
@@ -29,11 +29,11 @@ def make_robot():
           length=wheel_thickness,
           pos=vp.vector(axle_x, wheel_dist, axle_z),
           axis=vp.vector(0, 1, 0))
-    rear_castor = vp.cylinder(radius=rear_castor_radius,
-          length=rear_caster_thickness,
-          pos=rear_castor_position,
+    castor = vp.cylinder(radius=castor_radius,
+          length=castor_thickness,
+          pos=castor_position,
           axis=vp.vector(0, 1, 0))
-    return vp.compound([base, wheel_l, wheel_r, rear_castor])
+    return vp.compound([base, wheel_l, wheel_r, castor])
 
 
 if __name__ == "__main__":

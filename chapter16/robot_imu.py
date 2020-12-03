@@ -5,29 +5,30 @@ import logging
 logger = logging.getLogger(__name__)
 
 
-def format_angle(angle):
-    if angle < -180:
-        angle += 360
-    if angle > 180:
-        angle -= 360
-    return angle
-
 
 class ComplementaryFilter:
     def __init__(self, filter_left=0.9):
         self.filter_left = filter_left
         self.filter_right = 1.0 - filter_left
 
+    @staticmethod
+    def format_angle(angle):
+        if angle < -180:
+            angle += 360
+        if angle > 180:
+            angle -= 360
+        return angle
+
     def filter(self, left, right):
-        right = format_angle(right)
-        left = format_angle(left)
+        right = self.format_angle(right)
+        left = self.format_angle(left)
         if left - right > 330:
             right += 360
         elif right - left > 330:
             left += 360
         filtered = self.filter_left * left + \
                    self.filter_right * right
-        return format_angle(filtered)
+        return self.format_angle(filtered)
 
 
 class RobotImu:

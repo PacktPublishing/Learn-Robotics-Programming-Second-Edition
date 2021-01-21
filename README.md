@@ -1,9 +1,9 @@
-# Learn Robotics Programming – Second-Edition
+# Learn Robotics Programming – Second Edition
 Learn Robotics Programming – Second Edition published by Packt
 
-<a href="https://www.packtpub.com/product/learn-robotics-programming-second-edition/9781839218804?utm_source=github&utm_medium=repository&utm_campaign=9781839218804"><img src="https://static.packt-cdn.com/products/9781839218804/cover/smaller" alt="Learn Robotics Programming – Second-Edition" height="256px" align="right"></a>
+<a href="https://www.packtpub.com/product/learn-robotics-programming-second-edition/9781839218804?utm_source=github&utm_medium=repository&utm_campaign=9781839218804"><img src="https://static.packt-cdn.com/products/9781839218804/cover/smaller" alt="Learn Robotics Programming – Second Edition" height="256px" align="right"></a>
 
-This is the code repository for [Learn Robotics Programming – Second-Edition](https://www.packtpub.com/product/learn-robotics-programming-second-edition/9781839218804?utm_source=github&utm_medium=repository&utm_campaign=9781839218804), published by Packt.
+This is the code repository for [Learn Robotics Programming – Second Edition](https://www.packtpub.com/product/learn-robotics-programming-second-edition/9781839218804?utm_source=github&utm_medium=repository&utm_campaign=9781839218804), published by Packt.
 
 **Build and control AI-enabled autonomous robots using the Raspberry Pi and Python**
 

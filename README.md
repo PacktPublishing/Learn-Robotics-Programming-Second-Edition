@@ -47,6 +47,7 @@ With the following software and hardware list you can run all code files present
 | 1-19     | VPython                             | Raspbian Buster/Python3            |
 | 1-19     | Flask                               | Python3                            |
 
+Full robotics hardware shoping list at https://orionrobots.co.uk/2021/02/19/hardware-shopping-list-2nd-ed.html.
 
 
 We also provide a PDF file that has color images of the screenshots/diagrams used in this book. [Click here to download it](http://www.packtpub.com/sites/default/files/downloads/9781839218804_ColorImages.pdf).

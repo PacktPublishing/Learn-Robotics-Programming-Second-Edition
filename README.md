@@ -65,3 +65,7 @@ Click on the following link to see the Code in Action:
 
 ## Get to Know the Author
 **Danny Staple** builds robots and gadgets as a hobbyist, makes videos about his work with robots, and attends community events such as PiWars and Arduino Day. He has been a professional Python programmer, later moving into DevOps, since 2009, and a software engineer since 2000. He has worked with embedded systems, including embedded Linux systems, throughout the majority of his career. He has been a mentor at a local CoderDojo, where he taught how to code with Python. He has run Lego Robotics clubs with Mindstorms. He has also developed Bounce!, a visual programming language targeted at teaching code using the NodeMCU IoT platform. The robots he has built with his children include TankBot, SkittleBot (now the Pi Wars robot), ArmBot, and SpiderBot.
+### Download a free PDF
+
+ <i>If you have already purchased a print or Kindle version of this book, you can get a DRM-free PDF version at no cost.<br>Simply click on the link to claim your free PDF.</i>
+<p align="center"> <a href="https://packt.link/free-ebook/9781839218804">https://packt.link/free-ebook/9781839218804 </a> </p>
